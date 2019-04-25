@@ -7,15 +7,26 @@ public class CaesarCipher {
 		
 		char[] arr = str.toCharArray();
 		
+//		for(char arg : arr) {
+//			if(arg == ' ') {
+//				result += arg;
+//			}else if(arg >= 65 && arg <= 90){
+//				result += (char) (((arg%65 + n) % 26) + 65);
+//			}else if(arg >= 97 && arg <= 122) {
+//				result += (char) (((arg%97 + n) % 26) + 97);
+//			}
+//		}
+		
 		for(char arg : arr) {
 			if(arg == ' ') {
 				result += arg;
-			}else if(arg >= 65 && arg <= 90){
-				result += (char) (((arg%65 + n) % 26) + 65);
-			}else if(arg >= 97 && arg <= 122) {
-				result += (char) (((arg%97 + n) % 26) + 97);
+			}else if(arg >= 'A' && arg <= 'Z'){
+				result += (char) (((arg%'A' + n) % 26) + 'A');
+			}else if(arg >= 'a' && arg <= 'z') {
+				result += (char) (((arg%'a' + n) % 26) + 'a');
 			}
 		}
+		
 		
 		return result;
 	}
