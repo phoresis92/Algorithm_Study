@@ -5,7 +5,6 @@ import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintStream;
-import java.util.ArrayList;
 
 public class RotatedRect implements Solver {
 	
@@ -22,6 +21,7 @@ public class RotatedRect implements Solver {
 		BufferedReader 		br 		= new BufferedReader(reader);
 		Util 				util 	= new Util(br);
 		
+		MID_Rect 			midRect = new MID_Rect();
 		LT_Rect             ltRect  = new LT_Rect();
 		C_Rect              cRect   = new C_Rect();
 
@@ -38,15 +38,30 @@ public class RotatedRect implements Solver {
 				continue;
 			}
 			
-			ltRect.setX1(rectData[0]);
-			ltRect.setY1(rectData[1]);
+			ltRect.setX3(rectData[0]);
+			ltRect.setY3(rectData[1]);
+			midRect.setX3(rectData[0]);
+			midRect.setY3(rectData[1]);
 			
 			final int width 	= rectData[2];
 			final int height 	= rectData[3];
 			final int angle 	= rectData[4];
 			
-			out.println(rotation(new Point(ltRect.getX1()+width, ltRect.getY1()),ltRect.getPointLT1(),angle).getX());;
-			out.println(rotation(new Point(ltRect.getX1()+width, ltRect.getY1()),ltRect.getPointLT1(),angle).getY());;
+			Point mid4 = rotation(new Point(ltRect.getX1()+width, ltRect.getY1()),ltRect.getPointLT1(),angle);
+			midRect.setX4(Math.round((float)mid4.getX()));
+			midRect.setY4(Math.round((float)mid4.getY()));
+			
+			Point mid1 = rotation(midRect.getPointRB4(),midRect.getPointLB3(),90);
+			midRect.setX1(Math.round((float)mid1.getX()));
+			midRect.setX1(Math.round((float)mid1.getY()));
+			
+			Math.
+			
+			
+			
+			out.println();;
+			out.println();;
+			
 			
 			
 			testCase--;
@@ -139,6 +154,76 @@ class LT_Rect{
 	}
 	
 }
+
+class MID_Rect{
+	
+	private int[] xPoints = new int[4];
+	private int[] yPoints = new int[4];
+	 
+	public int getX1() {
+		return xPoints[1];
+	}
+	public void setX1(int x1) {
+		this.xPoints[1] = x1;
+	}
+	public int getX2() {
+		return xPoints[2];
+	}
+	public void setX2(int x2) {
+		this.xPoints[2] = x2;
+	}
+	public int getX3() {
+		return xPoints[3];
+	}
+	public void setX3(int x3) {
+		this.xPoints[3] = x3;
+	}
+	public int getX4() {
+		return xPoints[4];
+	}
+	public void setX4(int x4) {
+		this.xPoints[4] = x4;
+	}
+	public int getY1() {
+		return yPoints[1];
+	}
+	public void setY1(int y1) {
+		this.yPoints[1] = y1;
+	}
+	public int getY2() {
+		return yPoints[2];
+	}
+	public void setY2(int y2) {
+		this.yPoints[2] = y2;
+	}
+	public int getY3() {
+		return yPoints[3];
+	}
+	public void setY3(int y3) {
+		this.yPoints[3] = y3;
+	}
+	public int getY4() {
+		return yPoints[4];
+	}
+	public void setY4(int y4) {
+		this.yPoints[4] = y4;
+	}
+	
+	public Point getPointLT1(){
+		return new Point(xPoints[1], yPoints[1]);
+	}
+	public Point getPointRT2(){
+		return new Point(xPoints[2], yPoints[2]);
+	}
+	public Point getPointLB3(){
+		return new Point(xPoints[3], yPoints[3]);
+	}
+	public Point getPointRB4(){
+		return new Point(xPoints[4], yPoints[4]);
+	}
+	
+}
+
 
 class C_Rect{
 	
