@@ -1,6 +1,5 @@
 package com.miridih.exam;
 
-import java.awt.Point;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -9,7 +8,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 public class RotatedRect implements Solver {
-	
 	
 	public static void main(String[] args) {
 		new RotatedRect().solve(System.in, System.out);		
@@ -24,21 +22,20 @@ public class RotatedRect implements Solver {
 		Util 				util 	= new Util(br);
 		ArrayList<C_Rect> 	result 	= new ArrayList<C_Rect>();
 		
-		LT_Rect             ltRect  = new LT_Rect();
-		C_Rect              cRect   = new C_Rect();
-
 		
-		System.out.print("Test Case Count : ");
+//		System.out.print("Test Case Count : ");
 		int testCase = util.getNumber();
-		System.out.println("======================================");
+//		System.out.println("======================================");
 		while (testCase > 0) {
 
-			System.out.print("insert {x1, y1, w, h, a} : ");
-			int[] rectData = util.getPredict();
+//			System.out.print("insert {x1, y1, w, h, a} : ");
+			int[] rectData = util.getVariables();
 			
 			if(RECT_DATA_LENGTH != rectData.length) {
 				continue;
 			}
+			
+			LT_Rect   ltRect    = new LT_Rect();
 			
 			ltRect.setX1(rectData[0]);
 			ltRect.setY1(rectData[1]);
@@ -46,166 +43,88 @@ public class RotatedRect implements Solver {
 			final int height 	= rectData[3];
 			final int angle 	= rectData[4];
 			
-			double distance = Math.sqrt( Math.pow(width, 2)+Math.pow(height, 2));//사각형 대각선의 길이
-			double rad = Math.toRadians(angle);
-			double ang = Math.atan2(height/2, width/2);
-			
-			// x: x1-0.5width  +0.5sqt( pow(width,2)+pow(height,2)  )*cos( a+arctan( (width/2)/(height/2) ) )
-			// y: y1-0.5height +0.5sqt( pow(width,2)+pow(height,2)  )*sin( a+arctan( (width/2)/(height/2) ) )	
-			double tmpX1 = ltRect.getX1()-0.5*width+0.5*distance*Math.cos(rad+ang);
-			double tmpY1 = ltRect.getY1()-0.5*width+0.5*distance*Math.cos(rad+ang);
-			cRect.setX1((int)Math.round(tmpX1));
-			cRect.setY1((int)Math.round(tmpY1));
-					
-			result.add(cRect);
+			result.add(getNewPoint(ltRect, width, height, angle));
 			testCase--;
+			
 		}// testCase while end;
-		System.out.println("======================================");
+//		System.out.println("======================================");
 		
-		Iterator iter = result.iterator();
+		Iterator<C_Rect> iter = result.iterator();
 		while(iter.hasNext()) {
-			C_Rect cRec = (C_Rect)iter.next();
-			out.println(cRec.getX1()+" "+cRec.getY1());
+			C_Rect cRect = iter.next();
+			out.println(cRect.getX2()+" "+cRect.getY2());
 		}		
+		
 	}// solve end;			
 
+	
+	public C_Rect getNewPoint(LT_Rect ltRect, int width, int height, double angle) {
+	
+	 	double distance = Math.sqrt( Math.pow(width, 2)+Math.pow(height, 2));
+		double rad      = Math.toRadians(angle);
+		double ang      = Math.atan2(height/2, width/2);
+		C_Rect cRect    = new C_Rect();
+		
+		// x: x1-0.5w+0.5sqrt(  pow(width,2)+pow(height,2)  )*cos( a+arctan( (width/2)/(height/2) ) )
+		// y: y1-0.5h+0.5sqrt(  pow(width,2)+pow(height,2)  )*sin( a+arctan( (width/2)/(height/2) ) )
+		double tmpX2 = ltRect.getX1()-0.5*width+0.5*distance*Math.cos(rad+ang);
+		double tmpY2 = ltRect.getY1()-0.5*height+0.5*distance*Math.sin(rad+ang);
+		
+		cRect.setX2((int)Math.round(tmpX2));
+		cRect.setY2((int)Math.round(tmpY2));
+		
+		return cRect;
+	}
+	
+	private class LT_Rect{
+		
+		private int x1;
+		private int y1;
+		
+		public LT_Rect() {
+			this.x1 = 0;
+			this.y1 = 0;
+		}
+		
+		public int getX1() {
+			return x1;
+		}
+		public void setX1(int x1) {
+			this.x1 = x1;
+		}
+		public int getY1() {
+			return y1;
+		}
+		public void setY1(int y1) {
+			this.y1 = y1;
+		}
+		 
+	}
+	
+	private class C_Rect{
+		
+		private int x2;
+		private int y2;
+		
+		public C_Rect() {
+			this.x2 = 0;
+			this.y2 = 0;
+		}
 
-private Point rotation(Point targetP, Point rotP, double degree)
-{
- int x, y;
- double rad = Math.toRadians(degree);
-
- // 이동 후 좌표(x) = 현재 옮기고자 하는 좌표(mP.x) - x축의 중점(sP.x)
- x = (int)((targetP.x - rotP.x) * Math.cos(rad) - (targetP.y - rotP.y) * Math.sin(rad)) + rotP.x;
- y = (int)((targetP.x - rotP.x) * Math.sin(rad) + (targetP.y - rotP.y) * Math.cos(rad)) + rotP.y;
- Point myPoint = new Point(x,y);
- return myPoint;
-}
-
+		public int getX2() {
+			return x2;
+		}
+		public void setX2(int x2) {
+			this.x2 = x2;
+		}
+		public int getY2() {
+			return y2;
+		}
+		public void setY2(int y2) {
+			this.y2 = y2;
+		}
+		
+	}
+	
 }// class Solver end;
 
-class LT_Rect{
-	
-	private int[] xPoints = new int[4];
-	private int[] yPoints = new int[4];
-	 
-	public int getX1() {
-		return xPoints[1];
-	}
-	public void setX1(int x1) {
-		this.xPoints[1] = x1;
-	}
-	public int getX2() {
-		return xPoints[2];
-	}
-	public void setX2(int x2) {
-		this.xPoints[2] = x2;
-	}
-	public int getX3() {
-		return xPoints[3];
-	}
-	public void setX3(int x3) {
-		this.xPoints[3] = x3;
-	}
-	public int getX4() {
-		return xPoints[4];
-	}
-	public void setX4(int x4) {
-		this.xPoints[4] = x4;
-	}
-	public int getY1() {
-		return yPoints[1];
-	}
-	public void setY1(int y1) {
-		this.yPoints[1] = y1;
-	}
-	public int getY2() {
-		return yPoints[2];
-	}
-	public void setY2(int y2) {
-		this.yPoints[2] = y2;
-	}
-	public int getY3() {
-		return yPoints[3];
-	}
-	public void setY3(int y3) {
-		this.yPoints[3] = y3;
-	}
-	public int getY4() {
-		return yPoints[4];
-	}
-	public void setY4(int y4) {
-		this.yPoints[4] = y4;
-	}
-	
-}
-
-
-class C_Rect{
-	
-	private int[] xPoints = new int[4];
-	private int[] yPoints = new int[4];
-	
-	public int getX1() {
-		return xPoints[1];
-	}
-	public void setX1(int x1) {
-		this.xPoints[1] = x1;
-	}
-	public int getX2() {
-		return xPoints[2];
-	}
-	public void setX2(int x2) {
-		this.xPoints[2] = x2;
-	}
-	public int getX3() {
-		return xPoints[3];
-	}
-	public void setX3(int x3) {
-		this.xPoints[3] = x3;
-	}
-	public int getX4() {
-		return xPoints[4];
-	}
-	public void setX4(int x4) {
-		this.xPoints[4] = x4;
-	}
-	public int getY1() {
-		return yPoints[1];
-	}
-	public void setY1(int y1) {
-		this.yPoints[1] = y1;
-	}
-	public int getY2() {
-		return yPoints[2];
-	}
-	public void setY2(int y2) {
-		this.yPoints[2] = y2;
-	}
-	public int getY3() {
-		return yPoints[3];
-	}
-	public void setY3(int y3) {
-		this.yPoints[3] = y3;
-	}
-	public int getY4() {
-		return yPoints[4];
-	}
-	public void setY4(int y4) {
-		this.yPoints[4] = y4;
-	}
-	
-	public Point getPointLT1(){
-		return new Point(xPoints[1], yPoints[1]);
-	}
-	public Point getPointRT2(){
-		return new Point(xPoints[2], yPoints[2]);
-	}
-	public Point getPointLB3(){
-		return new Point(xPoints[3], yPoints[3]);
-	}
-	public Point getPointRB4(){
-		return new Point(xPoints[4], yPoints[4]);
-	}
-	
-}

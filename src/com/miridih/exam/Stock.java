@@ -38,7 +38,7 @@ public class Stock implements Solver {
 //			System.out.print("insert days : ");
 			final int n = util.getNumber();
 //			System.out.print("insert predicted stock : ");
-			int[] predict = util.getPredict();
+			int[] predict = util.getVariables();
 			
 			if(n != predict.length) {
 				continue;
@@ -57,40 +57,40 @@ public class Stock implements Solver {
 		}// testCase while end;
 //		System.out.println("======================================");
 		
-		Iterator iter = result.iterator();
+		Iterator<Account> iter = result.iterator();
 		while(iter.hasNext()) {
-			out.println(((Account)iter.next()).getDeposit());
+			out.println(iter.next().getDeposit());
 		}
 	}//solve end;
+
+	private class Account {
+	
+		private int deposit;
+		
+		public Account() {
+			this.deposit = 0;
+		}
+	
+		public int getDeposit() {
+			return deposit;
+		}
+		public void setDeposit(int deposit) {
+			this.deposit = deposit;
+		}
+		
+	}
+
 }// class Solver end;
-
-class Account {
-
-	private int deposit;
-	
-	public Account() {
-		this.deposit = 0;
-	}
-
-	public int getDeposit() {
-		return deposit;
-	}
-	public void setDeposit(int deposit) {
-		this.deposit = deposit;
-	}
-	
-}
-
 
 class Util {
 	
-	static BufferedReader br;
+	private BufferedReader br;
 	
 	public Util(BufferedReader br) {
 		this.br = br;
 	}
 
-	public static int getNumber() {
+	public int getNumber() {
 		int t = 0;
 		try {
 			t = Integer.parseInt(br.readLine().trim());
@@ -102,13 +102,13 @@ class Util {
 		return t;
 	}
 	
-	public static int[] getPredict() {
+	public int[] getVariables() {
 		String temp[] = null;
 		try {
 			temp = br.readLine().trim().split(" ");
 		} catch (Exception e) {
 //			System.out.println("[wrong list try again] " + e.getMessage());
-			getPredict();
+			getVariables();
 			return null;
 		}
 		int len = temp.length;
@@ -119,7 +119,7 @@ class Util {
 					t[i] = Integer.parseInt(temp[i]);
 				} catch (Exception e) {
 //					System.out.println("[you must insert number at list] " + e.getMessage());
-					getPredict();
+					getVariables();
 					return null;
 				}
 			}
