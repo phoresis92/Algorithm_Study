@@ -43,6 +43,7 @@ public class Stock implements Solver {
 			}
 
 			ArrayList<Integer> maxList = new ArrayList<Integer>();
+			
 			int     maxN  = 0;
 			boolean slope = false;
 			
@@ -50,6 +51,7 @@ public class Stock implements Solver {
 			for(int i = 1 ; i < predict.length ; i++) {
 				int prev = predict[i-1];
 				int now  = predict[i];
+				
 				if(prev >= now && slope) {
 					maxList.add(maxN);
 					slope = false;
@@ -68,13 +70,13 @@ public class Stock implements Solver {
 				boolean isBuy     = false;
 				boolean isNothing = false;
 				
-				if(maxList.size() == 0) {
-					break;
-				}
-				if(i == predict.length-1) {
-					account.doSellAll(predict[i]);
-					break;
-				}
+//				if(maxList.size() == 0) {
+//					break;
+//				}
+//				if(i == predict.length-1) {
+//					account.doSellAll(predict[i]);
+//					break;
+//				}
 
 				for(int j = 0 ; j < maxList.size() ; j++) {
 					isNothing = false;

@@ -47,6 +47,17 @@ public class RotatedRect implements Solver {
 		 	double distance = Math.sqrt( Math.pow(width, 2)+Math.pow(height, 2));
 			double rad      = Math.toRadians(angle);
 			double ang      = Math.atan2(height/2, width/2);
+
+			//////////////////////////////////////////////////////////////////////////////
+			// algorithm
+			// x좌표:    x1-0.5w+0.5sqt(  pow(w,2)+pow(h,2)  )*cos( a+arctan( (w/2)/(h/2) ) )
+			// y좌표:		y1-0.5h+0.5sqt(  pow(w,2)+pow(h,2)  )*sin( a+arctan( (w/2)/(h/2) ) )		
+			//////////////////////////////////////////////////////////////////////////////
+				
+			//////////////////////////////////////////////////////////////////////////////
+			// x좌표:    x1-0.5w+0.5sqt(  pow(w,2)+pow(h,2)  )*cos( a+arctan( (w/2)/(h/2) ) )
+			// y좌표:		y1-0.5h+0.5sqt(  pow(w,2)+pow(h,2)  )*sin( a+arctan( (w/2)/(h/2) ) )		
+			//////////////////////////////////////////////////////////////////////////////
 			
 			double tmpX2 = ltRect.getX1()-0.5*width+0.5*distance*Math.cos(rad+ang);
 			double tmpY2 = ltRect.getY1()-0.5*height+0.5*distance*Math.sin(rad+ang);
@@ -67,7 +78,7 @@ public class RotatedRect implements Solver {
 			out.println(cRect.getX2()+" "+cRect.getY2());
 		}		
 		
-	}// solve end;			
+	}// solve method end;			
 	
 	 private Point rotation(Point mP, Point sP, double rad) {
 		  int x, y;
@@ -78,28 +89,8 @@ public class RotatedRect implements Solver {
 		  y = (int) (((mP.x - sP.x) * Math.sin(rad) + (mP.y - sP.y) * Math.cos(rad)) + sP.y);
 		  Point myPoint = new Point(x, y);
 		  return myPoint;
-		 }
+	 }
 
-
-	
-//	public C_Rect getNewPoint(LT_Rect ltRect, int width, int height, double angle) {
-//	
-//	 	double distance = Math.sqrt( Math.pow(width, 2)+Math.pow(height, 2));
-//		double rad      = Math.toRadians(angle);
-//		double ang      = Math.atan2(height/2, width/2);
-//		C_Rect cRect    = new C_Rect();
-//		
-//		// x: x1-0.5w+0.5sqrt(  pow(width,2)+pow(height,2)  )*cos( a+arctan( (width/2)/(height/2) ) )
-//		// y: y1-0.5h+0.5sqrt(  pow(width,2)+pow(height,2)  )*sin( a+arctan( (width/2)/(height/2) ) )
-//		double tmpX2 = ltRect.getX1()-0.5*width+0.5*distance*Math.cos(rad+ang);
-//		double tmpY2 = ltRect.getY1()-0.5*height+0.5*distance*Math.sin(rad+ang);
-//		
-//		cRect.setX2((int)Math.round(tmpX2));
-//		cRect.setY2((int)Math.round(tmpY2));
-//		
-//		return cRect;
-//	}
-	
 	private class LT_Rect{
 		
 		private int x1;
@@ -122,12 +113,8 @@ public class RotatedRect implements Solver {
 		public void setY1(int y1) {
 			this.y1 = y1;
 		}
-		
-		public Point getP1() {
-			return new Point(x1,y1);
-		}
 		 
-	}
+	}// class LT_Rect end;
 	
 	private class C_Rect{
 		
@@ -152,7 +139,7 @@ public class RotatedRect implements Solver {
 			this.y2 = y2;
 		}
 		
-	}
+	}// class C_Rect end
 	
-}// class Solver end;
+}// main class RotatedRect
 
