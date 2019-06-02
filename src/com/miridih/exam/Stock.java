@@ -32,8 +32,6 @@ public class Stock implements Solver {
 		
 		while (testCase > 0) {
 			Account account = new Account();
-			int 	max  	= 0;
-			int		gain 	= 0;
 
 //			System.out.print("insert days : ");
 			final int n = util.getNumber();
@@ -43,15 +41,62 @@ public class Stock implements Solver {
 			if(n != predict.length) {
 				continue;
 			}
+
+			ArrayList<Integer> maxList = new ArrayList<Integer>();
+			int     maxN  = 0;
+			boolean slope = false;
 			
-			for(int i = n-1 ; i > -1 ; i--) {
-				if(predict[i] > max) {
-					max = predict[i];
+			// Get Max List
+			for(int i = 1 ; i < predict.length ; i++) {
+				int prev = predict[i-1];
+				int now  = predict[i];
+				if(prev >= now && slope) {
+					maxList.add(maxN);
+					slope = false;
 				}else {
-					gain += (max - predict[i]);
+					maxN  = i;
+					slope = true;
+					
+					if(i == predict.length -1) {
+						maxList.add(maxN);
+					}
+				}// if end
+			}// for end
+			
+			// Calc Result Deposit
+			for(int i = 0 ; i < predict.length ; i++) {
+				boolean isBuy     = false;
+				boolean isNothing = false;
+				
+				if(maxList.size() == 0) {
+					break;
 				}
-			}
-			account.setDeposit(gain);
+				if(i == predict.length-1) {
+					account.doSellAll(predict[i]);
+					break;
+				}
+
+				for(int j = 0 ; j < maxList.size() ; j++) {
+					isNothing = false;
+					
+					if(i > maxList.get(j)) {
+						isNothing = !isNothing;					
+					}else if(predict[i] < predict[maxList.get(j)]) {
+						isBuy     = true;
+					}
+				}// for end
+				
+				if(isNothing) {
+					account.doNothing();
+					continue;
+				}
+				if(isBuy) {
+					account.doBuy(predict[i]);
+				}else {
+					account.doSellAll(predict[i]);
+				}
+			}// for end
+			
 			result.add(account);
 			testCase--;
 		}// testCase while end;
@@ -61,23 +106,38 @@ public class Stock implements Solver {
 		while(iter.hasNext()) {
 			out.println(iter.next().getDeposit());
 		}
-	}//solve end;
+	}//solve method end;
 
 	private class Account {
 	
 		private int deposit;
+		private int stock;
 		
 		public Account() {
 			this.deposit = 0;
+			this.stock = 0;
 		}
 	
 		public int getDeposit() {
 			return deposit;
 		}
-		public void setDeposit(int deposit) {
-			this.deposit = deposit;
-		}
 		
+		public void doBuy(int price){
+			deposit = deposit - price;
+			stock++;
+//			System.out.println("buy");
+		}
+		public void doSellAll(int price) {
+			if(stock == 0) {
+				return;
+			}
+			deposit = deposit + (stock * price);
+			stock = 0;
+//			System.out.println("sell");
+		}
+		public void doNothing() {
+//			System.out.println("nothing");}
+		}
 	}
 
 }// class Solver end;

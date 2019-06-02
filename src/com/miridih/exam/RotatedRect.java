@@ -1,5 +1,6 @@
 package com.miridih.exam;
 
+import java.awt.Point;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -23,12 +24,12 @@ public class RotatedRect implements Solver {
 		ArrayList<C_Rect> 	result 	= new ArrayList<C_Rect>();
 		
 		
-//		System.out.print("Test Case Count : ");
+		System.out.print("Test Case Count : ");
 		int testCase = util.getNumber();
-//		System.out.println("======================================");
+		System.out.println("======================================");
 		while (testCase > 0) {
 
-//			System.out.print("insert {x1, y1, w, h, a} : ");
+			System.out.print("insert {x1, y1, w, h, a} : ");
 			int[] rectData = util.getVariables();
 			
 			if(RECT_DATA_LENGTH != rectData.length) {
@@ -43,11 +44,22 @@ public class RotatedRect implements Solver {
 			final int height 	= rectData[3];
 			final int angle 	= rectData[4];
 			
-			result.add(getNewPoint(ltRect, width, height, angle));
+		 	double distance = Math.sqrt( Math.pow(width, 2)+Math.pow(height, 2));
+			double rad      = Math.toRadians(angle);
+			double ang      = Math.atan2(height/2, width/2);
+			
+			double tmpX2 = ltRect.getX1()-0.5*width+0.5*distance*Math.cos(rad+ang);
+			double tmpY2 = ltRect.getY1()-0.5*height+0.5*distance*Math.sin(rad+ang);
+
+			C_Rect cRect    = new C_Rect();
+			cRect.setX2((int)Math.round(tmpX2));
+			cRect.setY2((int)Math.round(tmpY2));
+
+			result.add(cRect);
 			testCase--;
 			
 		}// testCase while end;
-//		System.out.println("======================================");
+		System.out.println("======================================");
 		
 		Iterator<C_Rect> iter = result.iterator();
 		while(iter.hasNext()) {
@@ -56,25 +68,37 @@ public class RotatedRect implements Solver {
 		}		
 		
 	}// solve end;			
+	
+	 private Point rotation(Point mP, Point sP, double rad) {
+		  int x, y;
+		  //double rad = Math.toRadians(degree);
+
+		  // 이동 후 좌표(x) = 현재 옮기고자 하는 좌표(mP.x) - x축의 중점(sP.x)
+		  x = (int) (((mP.x - sP.x) * Math.cos(rad) - (mP.y - sP.y) * Math.sin(rad)) + sP.x);
+		  y = (int) (((mP.x - sP.x) * Math.sin(rad) + (mP.y - sP.y) * Math.cos(rad)) + sP.y);
+		  Point myPoint = new Point(x, y);
+		  return myPoint;
+		 }
+
 
 	
-	public C_Rect getNewPoint(LT_Rect ltRect, int width, int height, double angle) {
-	
-	 	double distance = Math.sqrt( Math.pow(width, 2)+Math.pow(height, 2));
-		double rad      = Math.toRadians(angle);
-		double ang      = Math.atan2(height/2, width/2);
-		C_Rect cRect    = new C_Rect();
-		
-		// x: x1-0.5w+0.5sqrt(  pow(width,2)+pow(height,2)  )*cos( a+arctan( (width/2)/(height/2) ) )
-		// y: y1-0.5h+0.5sqrt(  pow(width,2)+pow(height,2)  )*sin( a+arctan( (width/2)/(height/2) ) )
-		double tmpX2 = ltRect.getX1()-0.5*width+0.5*distance*Math.cos(rad+ang);
-		double tmpY2 = ltRect.getY1()-0.5*height+0.5*distance*Math.sin(rad+ang);
-		
-		cRect.setX2((int)Math.round(tmpX2));
-		cRect.setY2((int)Math.round(tmpY2));
-		
-		return cRect;
-	}
+//	public C_Rect getNewPoint(LT_Rect ltRect, int width, int height, double angle) {
+//	
+//	 	double distance = Math.sqrt( Math.pow(width, 2)+Math.pow(height, 2));
+//		double rad      = Math.toRadians(angle);
+//		double ang      = Math.atan2(height/2, width/2);
+//		C_Rect cRect    = new C_Rect();
+//		
+//		// x: x1-0.5w+0.5sqrt(  pow(width,2)+pow(height,2)  )*cos( a+arctan( (width/2)/(height/2) ) )
+//		// y: y1-0.5h+0.5sqrt(  pow(width,2)+pow(height,2)  )*sin( a+arctan( (width/2)/(height/2) ) )
+//		double tmpX2 = ltRect.getX1()-0.5*width+0.5*distance*Math.cos(rad+ang);
+//		double tmpY2 = ltRect.getY1()-0.5*height+0.5*distance*Math.sin(rad+ang);
+//		
+//		cRect.setX2((int)Math.round(tmpX2));
+//		cRect.setY2((int)Math.round(tmpY2));
+//		
+//		return cRect;
+//	}
 	
 	private class LT_Rect{
 		
@@ -97,6 +121,10 @@ public class RotatedRect implements Solver {
 		}
 		public void setY1(int y1) {
 			this.y1 = y1;
+		}
+		
+		public Point getP1() {
+			return new Point(x1,y1);
 		}
 		 
 	}

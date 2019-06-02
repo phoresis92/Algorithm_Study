@@ -45,25 +45,19 @@ public class Raster implements Solver {
 		Point p4 = new Point();
 		
 		double diagonal = Math.sqrt(Math.pow(p3.x - p1.x, 2) + Math.pow(p3.y - p1.y, 2));
-		double angle    = 45 - Math.toDegrees(Math.atan2((p3.y - p1.y), (p3.x - p1.x)));
+		double angDeg    = 45 - Math.toDegrees(Math.atan2((p3.y - p1.y), (p3.x - p1.x)));
 		double side     = diagonal/Math.sqrt(2);
 		
-		p2.x = (int) (p1.x + side * Math.cos(Math.toRadians(angle)));
-		p2.y = (int) (p1.y - side * Math.sin(Math.toRadians(angle)));
-		p4.x = (int) (p3.x - side * Math.sin(Math.toRadians(angle)));
-		p4.y = (int) (p3.y + side * Math.cos(Math.toRadians(angle)));
+		p2.x = (int) (p1.x + side * Math.cos(Math.toRadians(angDeg)));
+		p2.y = (int) (p1.y - side * Math.sin(Math.toRadians(angDeg)));
+		p4.x = (int) (p3.x - side * Math.sin(Math.toRadians(angDeg)));
+		p4.y = (int) (p3.y + side * Math.cos(Math.toRadians(angDeg)));
 		
-		line l1 = new line(  p1, gradient( p1, p2 )  );
-		line l2 = new line(  p2, gradient( p2, p3 )  );
-		line l3 = new line(  p3, gradient( p3, p4 )  );
-		line l4 = new line(  p4, gradient( p4, p1 )  );
+		line l1 = new line(  p1, getSlope( p1, p2 )  );
+		line l2 = new line(  p2, getSlope( p2, p3 )  );
+		line l3 = new line(  p3, getSlope( p3, p4 )  );
+		line l4 = new line(  p4, getSlope( p4, p1 )  );
 		
-		
-
-
-
-		
-
 		//////////////////////////////////////////////////////////////////////////////
 		//algorithm
 		//w, h, x_circle, y_circle, r,  x1, y1,   x3, y3
@@ -102,16 +96,27 @@ public class Raster implements Solver {
 
 	private static double graph(int x, line line) {
 		double res_y = 0;
-		res_y = (line.grad * x) + line.point.y - (line.grad * line.point.x);
+		res_y = (line.slope * x) + line.point.y - (line.slope * line.point.x);
 		return res_y;
 	}
 	
-	private static double gradient(Point p1, Point p2) {
-		return (p1.y - p2.y) / (p1.x - p2.x);
-	}		
+	private static double getSlope(Point p1, Point p2) {
+		return (p2.y - p1.y) / (p2.x - p1.x);
+	}
 	
 	private double getRadius(int x_circle, int y_circle, int x, int y) {
 		return Math.sqrt(Math.pow((x_circle - x), 2) + Math.pow((y_circle - y), 2));
+	}
+	
+	public static class line {
+		double slope;
+		Point point;
+		public line() {};
+		public line(Point point, double slope) {
+			// TODO Auto-generated constructor stub
+			this.point = point;
+			this.slope = slope;
+		}
 	}
 	
 	private int[] getVar(Util util) {
@@ -174,18 +179,4 @@ public class Raster implements Solver {
 		return var;
 	}//getVar
 
-	public static class line {
-		double grad;
-		Point point;
-		public line() {};
-		public line(Point point, double grad) {
-			// TODO Auto-generated constructor stub
-			this.point = point;
-			this.grad = grad;
-		}
-		
-
-
-	}
-	
 } // class Raster end;
