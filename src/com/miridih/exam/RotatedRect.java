@@ -48,7 +48,6 @@ public class RotatedRect implements Solver {
 			double rad          = Math.toRadians(angle);
 			double ang          = Math.atan2(height/2, width/2);  
 
-			
 			double movedCenterX = 0.5*diagonal*Math.cos(rad+ang);
 			double movedCenterY = 0.5*diagonal*Math.sin(rad+ang);
 			

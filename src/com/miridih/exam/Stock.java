@@ -71,17 +71,9 @@ public class Stock implements Solver {
 			
 			// Calc Result Deposit
 			for(int i = 0 ; i < predict.length ; i++) {
-//				if(maxList.size() == 0) {
-//					break;
-//				}
 				boolean isBuy     = false;
 				boolean isNothing = false;
 				
-//				if(i == predict.length-1) {
-//					account.doSellAll(predict[i]);
-//					break;
-//				}
-
 				for(int j = 0 ; j < maxList.size() ; j++) {
 					isNothing = false;
 					
