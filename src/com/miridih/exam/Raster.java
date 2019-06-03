@@ -40,45 +40,25 @@ public class Raster implements Solver {
 	  //==========================//
 		
 		Point p1 = new Point(var[5], var[6]);
-		Point p3 = new Point(var[7], var[8]);
 		Point p2 = new Point();
+		Point p3 = new Point(var[7], var[8]);
 		Point p4 = new Point();
 		
 		double diagonal = Math.sqrt(Math.pow(p3.x - p1.x, 2) + Math.pow(p3.y - p1.y, 2));
-		double angDeg    = 45 - Math.toDegrees(Math.atan2((p3.y - p1.y), (p3.x - p1.x)));
+		double angDeg   = 45 - Math.toDegrees(Math.atan2((p3.y - p1.y), (p3.x - p1.x)));
 		double side     = diagonal/Math.sqrt(2);
 		
-		p2.x = (int) (p1.x + side * Math.cos(Math.toRadians(angDeg)));
-		p2.y = (int) (p1.y - side * Math.sin(Math.toRadians(angDeg)));
-		p4.x = (int) (p3.x - side * Math.sin(Math.toRadians(angDeg)));
-		p4.y = (int) (p3.y + side * Math.cos(Math.toRadians(angDeg)));
+		double calcX    = side * Math.cos(Math.toRadians(angDeg));
+		double calcY    = side * Math.sin(Math.toRadians(angDeg));
 		
-		line l1 = new line(  p1, getSlope( p1, p2 )  );
-		line l2 = new line(  p2, getSlope( p2, p3 )  );
-		line l3 = new line(  p3, getSlope( p3, p4 )  );
-		line l4 = new line(  p4, getSlope( p4, p1 )  );
-		
-		//////////////////////////////////////////////////////////////////////////////
-		//algorithm
-		//w, h, x_circle, y_circle, r,  x1, y1,   x3, y3
-		//20,16,       9,        6, 5, (16,14),  (8,14)
-		//3-1. 이중for문으로 점(x:20 * y:16 좌표계)들을 찍으면서(9,6)과의 거리(d)를 잰다.
-		//거리(d)가 5(r)보다 작거나 같으면 #을 찍고 d가 5(r)보다 크면 .을 찍는다.
-		//3-2. 두 점 P1(x1,y1) P3(x3,y3)로 나머지 두점 P2(x2,y2) P4(x4,y4)을 구한다.
-		//P1-P2, P2-P3, P3-P4, P4-P1 의 그래프를 만든다.
-		//y값이 P1-P2, P2-P3 보다 작고 P3-P4, P4-P1보다 큰 좌표에 #을 찍고 그 외에는 .을 찍는다
-		//////////////////////////////////////////////////////////////////////////////
-
-//		20 16
-//		9 6 5
-//		16 14 8 14
-		
+		p2.x = (int) (p1.x + calcX);
+		p2.y = (int) (p1.y - calcY);
+		p4.x = (int) (p3.x - calcX);
+		p4.y = (int) (p3.y + calcY);
+	
 		for(int y = 0 ; y < height ; y++) {
 			for(int x = 0 ; x < width ; x++) {
 				if(getRadius(x_circle, y_circle, x, y) <= r) {
-					out.print("#");
-				} else if (y <= graph(x, l1) && y <= graph(x, l2) 
-						&& y >= graph(x, l3) && y >= graph(x, l4)) {
 					out.print("#");
 				}else {
 					out.print(".");
@@ -90,40 +70,18 @@ public class Raster implements Solver {
 
 	}// solve end;			
 	
-
-	private static double graph(int x, line line) {
-		double res_y = 0;
-		res_y = (line.slope * x) + line.point.y - (line.slope * line.point.x);
-		return res_y;
-	}
-	
-	private static double getSlope(Point p1, Point p2) {
-		return (p2.y - p1.y) / (p2.x - p1.x);
-	}
-	
 	private double getRadius(int x_circle, int y_circle, int x, int y) {
 		return Math.sqrt(Math.pow((x_circle - x), 2) + Math.pow((y_circle - y), 2));
-	}
-	
-	public static class line {
-		double slope;
-		Point point;
-		public line() {};
-		public line(Point point, double slope) {
-			// TODO Auto-generated constructor stub
-			this.point = point;
-			this.slope = slope;
-		}
 	}
 	
 	private int[] getVar(Util util) {
 		int[] var = new int[TOTAL_VAR_CNT];
 		
 		int varCnt = 1;
-		System.out.println("======================================");
+//		System.out.println("======================================");
 		while (varCnt > 0) {
 
-			System.out.print("insert {width, height} : ");
+//			System.out.print("insert {width, height} : ");
 			int[] width_height = util.getVariables();
 			
 			if(WIDTH_HEIGHT != width_height.length) {
@@ -139,7 +97,7 @@ public class Raster implements Solver {
 		varCnt = 1;
 		while (varCnt > 0) {
 
-			System.out.print("insert {x_circle, y_circle, r} : ");
+//			System.out.print("insert {x_circle, y_circle, r} : ");
 			int[] circle_xyr = util.getVariables();
 			
 			if(CIRCLE_XYR != circle_xyr.length) {
@@ -156,7 +114,7 @@ public class Raster implements Solver {
 		varCnt = 1;
 		while (varCnt > 0) {
 
-			System.out.print("insert {x1, y1, x3, y3} : ");
+//			System.out.print("insert {x1, y1, x3, y3} : ");
 			int[] xy13 = util.getVariables();
 			
 			if(XY13 != xy13.length) {
@@ -171,7 +129,7 @@ public class Raster implements Solver {
 			varCnt--;
 			
 		}// xy13 while end;
-		System.out.println("======================================");
+//		System.out.println("======================================");
 		
 		return var;
 	}//getVar

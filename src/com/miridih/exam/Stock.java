@@ -8,7 +8,9 @@ import java.io.*;
 public class Stock implements Solver {
 	
 	public static void main(String[] args) {
+		
 		new Stock().solve(System.in, System.out);		
+
 	}
 	
 	/**
@@ -20,7 +22,9 @@ public class Stock implements Solver {
 	
 	
 	public void solve(InputStream in, PrintStream out) {
-
+		
+//		long start = System.currentTimeMillis();
+		
 		InputStreamReader 	reader 	= new InputStreamReader(in);
 		BufferedReader 		br 		= new BufferedReader(reader);
 		Util 				util 	= new Util(br);
@@ -67,12 +71,12 @@ public class Stock implements Solver {
 			
 			// Calc Result Deposit
 			for(int i = 0 ; i < predict.length ; i++) {
-				boolean isBuy     = false;
-				boolean isNothing = false;
-				
 //				if(maxList.size() == 0) {
 //					break;
 //				}
+				boolean isBuy     = false;
+				boolean isNothing = false;
+				
 //				if(i == predict.length-1) {
 //					account.doSellAll(predict[i]);
 //					break;
@@ -108,6 +112,9 @@ public class Stock implements Solver {
 		while(iter.hasNext()) {
 			out.println(iter.next().getDeposit());
 		}
+		
+//		long end = System.currentTimeMillis();
+//		System.out.println("Result Time : "+ (end - start)/1000);
 	}//solve method end;
 
 	private class Account {
