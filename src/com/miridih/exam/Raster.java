@@ -55,10 +55,18 @@ public class Raster implements Solver {
 		p2.y = (int) (p1.y - calcY);
 		p4.x = (int) (p3.x - calcX);
 		p4.y = (int) (p3.y + calcY);
-	
+		
+		//y = slope* x + a
+		
+		
 		for(int y = 0 ; y < height ; y++) {
 			for(int x = 0 ; x < width ; x++) {
 				if(getRadius(x_circle, y_circle, x, y) <= r) {
+					out.print("#");
+				}else if(y < clacGraph(p1,p2)[0] * x + clacGraph(p1,p2)[1] &&
+					     y < clacGraph(p2,p3)[0] * x + clacGraph(p2,p3)[1] &&
+					     y > clacGraph(p3,p4)[0] * x + clacGraph(p3,p4)[1] &&
+					     y > clacGraph(p4,p1)[0] * x + clacGraph(p4,p1)[1]) {
 					out.print("#");
 				}else {
 					out.print(".");
@@ -68,10 +76,18 @@ public class Raster implements Solver {
 		}// for end;
 		
 
-	}// solve end;			
+	}// solve end;	
 	
 	private double getRadius(int x_circle, int y_circle, int x, int y) {
 		return Math.sqrt(Math.pow((x_circle - x), 2) + Math.pow((y_circle - y), 2));
+	}
+	
+	private double[] clacGraph(Point p1, Point p2) {
+		double slope = (p2.y-p1.y)/(p2.x-p1.x);
+		double a = p1.y - slope * p1.x;
+		double[] result = {slope, a};
+		
+		return result;
 	}
 	
 	private int[] getVar(Util util) {

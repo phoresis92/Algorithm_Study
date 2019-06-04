@@ -1,4 +1,4 @@
-package com.miridih.exam;
+package test;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -21,7 +21,7 @@ public class Grader {
 	public static void main(String[] args) {
 		final String BF = "C:/Users/hushe/dev/";
 
-//		grade(new Stock(), BF + "주식투자-input02.txt", BF + "주식투자-output02.txt");
+		grade(new Stock(), BF + "주식투자-input02.txt", BF + "주식투자-output02.txt");
 		grade(new RotatedRect(), BF + "회전사각형-input.txt", BF + "회전사각형-output.txt");
 		grade(new Raster(), BF + "래스터그래픽-input00.txt", BF + "래스터그래픽output00.txt");
 
