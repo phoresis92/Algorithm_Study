@@ -2,7 +2,6 @@ package com.miridih.exam;
 
 import java.util.*;
 
-
 import java.io.*;
 
 public class Stock implements Solver {
@@ -23,11 +22,9 @@ public class Stock implements Solver {
 	
 	public void solve(InputStream in, PrintStream out) {
 		
-//		long start = System.currentTimeMillis();
+		long start = System.currentTimeMillis();
 		
-		InputStreamReader 	reader 	= new InputStreamReader(in);
-		BufferedReader 		br 		= new BufferedReader(reader);
-		Util 				util 	= new Util(br);
+		Util util = new Util(new BufferedReader( new InputStreamReader(in)));
 		ArrayList<Account> 	result 	= new ArrayList<Account>();
 		
 //		System.out.print("Test Case Count : ");
@@ -105,8 +102,9 @@ public class Stock implements Solver {
 			out.println(iter.next().getDeposit());
 		}
 		
-//		long end = System.currentTimeMillis();
-//		System.out.println("Result Time : "+ (end - start)/1000);
+/*		long end = System.currentTimeMillis();
+		System.out.println("Result Time : "+ (end - start)/1000);      */
+		
 	}//solve method end;
 
 	private class Account {

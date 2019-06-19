@@ -20,9 +20,7 @@ public class Raster implements Solver {
 	
 	public void solve(InputStream in, PrintStream out) {
 
-		InputStreamReader 	reader 	= new InputStreamReader(in);
-		BufferedReader 		br 		= new BufferedReader(reader);
-		Util 				util 	= new Util(br);
+		Util util = new Util(new BufferedReader(new InputStreamReader(in)));
 
 		int var[]     =   getVar(util);
 	  //==========================//
@@ -44,29 +42,27 @@ public class Raster implements Solver {
 		Point p3 = new Point(var[7], var[8]);
 		Point p4 = new Point();
 		
-		double diagonal = Math.sqrt(Math.pow(p3.x - p1.x, 2) + Math.pow(p3.y - p1.y, 2));
-		double angDeg   = 45 - Math.toDegrees(Math.atan2((p3.y - p1.y), (p3.x - p1.x)));
+		double diagonal = Math.sqrt(Math.pow(p3.getX() - p1.getX(), 2) + Math.pow(p3.getY() - p1.getY(), 2));
+		double angDeg   = 45 - Math.toDegrees(Math.atan2((p3.getY() - p1.getY()), (p3.getX() - p1.getX())));
 		double side     = diagonal/Math.sqrt(2);
 		
 		double calcX    = side * Math.cos(Math.toRadians(angDeg));
 		double calcY    = side * Math.sin(Math.toRadians(angDeg));
 		
-		p2.x = (int) (p1.x + calcX);
-		p2.y = (int) (p1.y - calcY);
-		p4.x = (int) (p3.x - calcX);
-		p4.y = (int) (p3.y + calcY);
-		
-		//y = slope* x + a
+		p2.x = (int) (p1.getX() + calcX);
+		p2.y = (int) (p1.getY() - calcY);
+		p4.x = (int) (p3.getX() - calcX);
+		p4.y = (int) (p3.getY() + calcY);
 		
 		
 		for(int y = 0 ; y < height ; y++) {
 			for(int x = 0 ; x < width ; x++) {
-				if(getRadius(x_circle, y_circle, x, y) <= r) {
+				if(calcRadius(x_circle, y_circle, x, y) <= r) {
 					out.print("#");
-				}else if(y < clacGraph(p1,p2)[0] * x + clacGraph(p1,p2)[1] &&
-					     y < clacGraph(p2,p3)[0] * x + clacGraph(p2,p3)[1] &&
-					     y > clacGraph(p3,p4)[0] * x + clacGraph(p3,p4)[1] &&
-					     y > clacGraph(p4,p1)[0] * x + clacGraph(p4,p1)[1]) {
+				}else if(y <= calcY(p1,p2,x) &&
+						 y <= calcY(p2,p3,x) &&
+					     y >= calcY(p3,p4,x) &&
+					     y >= calcY(p4,p1,x)) {
 					out.print("#");
 				}else {
 					out.print(".");
@@ -76,18 +72,15 @@ public class Raster implements Solver {
 		}// for end;
 		
 
-	}// solve end;	
+	}// solve end;
 	
-	private double getRadius(int x_circle, int y_circle, int x, int y) {
+	private double calcRadius(int x_circle, int y_circle, int x, int y) {
 		return Math.sqrt(Math.pow((x_circle - x), 2) + Math.pow((y_circle - y), 2));
 	}
 	
-	private double[] clacGraph(Point p1, Point p2) {
-		double slope = (p2.y-p1.y)/(p2.x-p1.x);
-		double a = p1.y - slope * p1.x;
-		double[] result = {slope, a};
-		
-		return result;
+	private double calcY(Point p1, Point p2, int x) {
+		double slope = (p1.getY() - p2.getY()) / (p1.getX() - p2.getX());
+		return  (slope * x) + p1.getY() - (slope * p1.getX());
 	}
 	
 	private int[] getVar(Util util) {

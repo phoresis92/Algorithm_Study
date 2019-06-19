@@ -1,6 +1,5 @@
 package com.miridih.exam;
 
-import java.awt.Point;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -18,10 +17,8 @@ public class RotatedRect implements Solver {
 
 	public void solve(InputStream in, PrintStream out) {
 
-		InputStreamReader 	reader 	= new InputStreamReader(in);
-		BufferedReader 		br 		= new BufferedReader(reader);
-		Util 				util 	= new Util(br);
-		ArrayList<C_Rect> 	result 	= new ArrayList<C_Rect>();
+		Util util = new Util(new BufferedReader(new InputStreamReader(in)));
+		ArrayList<C_Rect> result = new ArrayList<C_Rect>();
 		
 		
 //		System.out.print("Test Case Count : ");
