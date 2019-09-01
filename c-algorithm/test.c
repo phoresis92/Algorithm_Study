@@ -1,16 +1,55 @@
 #include <stdio.h>
 
-int main(void){
+int heap[10] = {9,5,1,6,8,4,7,2,3,0};
+int num = 10;
+int temp, i;
+
+int tem[10];
+
+void quickSort(int arr[], int start, int end){
+	if(start >= end){
+		return;
+	}
 	
-	int arr[10] = {9, 2, 8, 4, 7, 10, 1, 6, 5, 3};
-	int i, j;
+	int lt = start + 1;
+	int rt = end;
+	int pi = start;
 	
-	for(i = 0 ; i < 10 ; i++){
-//		printf("%d\n", i);
-		for(j = 0 ; j < 10-1-i ; j++){
+	while(lt <= rt){
+		while(arr[lt] >= arr[pi]){
+			lt++;
+		}	
+		while(arr[rt] <= arr[pi] && rt > start){
+			rt--;
+		}
+		
+		if(lt >= rt){
 			
-			printf("j : %d\n", j);
+			temp = arr[rt];
+			arr[rt] = arr[pi];
+			arr[pi] = temp;
+			
+		}else{
+			temp = arr[lt];
+			arr[lt] = arr[rt];
+			arr[rt] = temp;
 		}
 	}
+	
+	quickSort(arr, start, rt-1);
+	quickSort(arr, rt+1, end);
+	
+	
+	
+}
+
+int main(void){
+
+	quickSort(heap, 0, 9);
+	
+	for(i = 0 ; i < num ; i++){
+		printf("%d ", heap[i]);
+	}
+	
 	return 0;
 }
