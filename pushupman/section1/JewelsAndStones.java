@@ -7,7 +7,7 @@ import java.util.HashSet;
  * @created : 2020-12-11
  **/
 
-public class JandS {
+public class JewelsAndStones {
 
     public static void main(String[] args) {
 
