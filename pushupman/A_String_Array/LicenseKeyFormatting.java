@@ -1,4 +1,4 @@
-package pushupman.section1;
+package pushupman.A_String_Array;
 
 public class LicenseKeyFormatting {
 

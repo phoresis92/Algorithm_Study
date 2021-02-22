@@ -1,4 +1,4 @@
-package pushupman.section3;
+package pushupman.C_Queue_Stack;
 
 import java.util.Stack;
 

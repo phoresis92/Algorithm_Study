@@ -1,4 +1,4 @@
-package pushupman.section2;
+package pushupman.B_LinkedList;
 
 import java.util.*;
 import java.util.stream.Collector;

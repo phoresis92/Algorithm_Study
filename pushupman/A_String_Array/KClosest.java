@@ -1,8 +1,7 @@
-package pushupman.section1;
+package pushupman.A_String_Array;
 
 import java.util.*;
 import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 public class KClosest {
 

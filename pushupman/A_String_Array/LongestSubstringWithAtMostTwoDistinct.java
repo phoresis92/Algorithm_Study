@@ -1,8 +1,7 @@
-package pushupman.section1;
+package pushupman.A_String_Array;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedList;
 
 public class LongestSubstringWithAtMostTwoDistinct {
 
